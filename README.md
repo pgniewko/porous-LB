@@ -3,8 +3,8 @@ DESCRIPTION
 `porous-LB` is a code that performs Lattice-Boltzmann simulations for the porous material.
 
 The code calculates material permeability (using [Darcy's law](https://en.wikipedia.org/wiki/Darcy%27s_law)) and [tortuosity](http://aip.scitation.org/doi/abs/10.1063/1.4711147) 
-using BGK or MRT relaxation models.
-The calculation can be performed with periodic and non-periodic boundary condition. 
+using BGK or MRT relaxation models.   
+The calculation can be performed with periodic and non-periodic boundary condition.   
 
 GETTING THE CODE
 ==================================================
@@ -33,7 +33,7 @@ Compilation options can be set by changing proper variables in Makefile:
 
 EXTERNAL LIBRARIES
 ================
-The code requires an external library: [Palabos] (http://www.palabos.org/).
+The code requires an external library: [Palabos](http://www.palabos.org/).
 
 USAGE
 =====
@@ -45,10 +45,10 @@ Run the code with no parameters for the options list and usage:
 
 COPYRIGHT NOTICE
 ================
-Copyright (C) 2017, Pawel Gniewek
-Email : pawel.gniewek@berkeley.edu
-All rights reserved.
-License: BSD
+Copyright (C) 2017, Pawel Gniewek   
+Email : pawel.gniewek@berkeley.edu   
+All rights reserved.   
+License: BSD   
 
 ACKNOWLEDGMENTS
 ===============
