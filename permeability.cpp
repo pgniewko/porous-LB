@@ -7,7 +7,12 @@ using namespace plb;
 using namespace std;
 
 typedef double T;
-#define DESCRIPTOR descriptors::D3Q19Descriptor
+
+#ifdef USE_MRT
+    #define DESCRIPTOR descriptors::MRTD3Q19Descriptor
+#else
+    #define DESCRIPTOR descriptors::D3Q19Descriptor
+#endif
 
 // This function object returns a zero velocity, and a pressure which decreases
 //   linearly in x-direction. It is used to initialize the particle populations.
@@ -45,25 +50,21 @@ Box3D setInlet(plint nx_, plint ny_, plint nz_, plint ax_)
 
     if (ax_ == 0)
     {
-//        Box3D inlet (0, 0, 1, ny_-2, 1, nz_-2);
         Box3D inlet (0, 0, 0, ny_-1, 0, nz_-1);
         return inlet;
     }
     else if (ax_ == 1)
     {
-//        Box3D inlet (1, nx_-2, 0, 0, 1, nz_-2);
         Box3D inlet (0, nx_-1, 0, 0, 0, nz_-1);
         return inlet;
     }
     else if (ax_ == 2)
     {
-//        Box3D inlet (1, nx_-2, 1, ny_-2, 0, 0);
         Box3D inlet (0, nx_-1, 0, ny_-1, 0, 0);
         return inlet;
     }
     else
     {
-//        Box3D inlet (0, 0, 1, ny_-2, 1, nz_-2);
         Box3D inlet (0, 0, 0, ny_-1, 0, nz_-1);
         return inlet;
     }
@@ -74,25 +75,21 @@ Box3D setOutlet(plint nx_, plint ny_, plint nz_, plint ax_)
 
     if (ax_ == 0)
     {
-//        Box3D outlet (nx_-1, nx_-1, 1, ny_-2, 1, nz_-2);
         Box3D outlet (nx_-1, nx_-1, 0, ny_-1, 0, nz_-1);
         return outlet;
     }
     else if (ax_ == 1)
     {
-//        Box3D outlet(1, nx_-2, ny_-1, ny_-1, 1, nz_-2);
         Box3D outlet(0, nx_-1, ny_-1, ny_-1, 0, nz_-1);
         return outlet;
     }
     else if (ax_ == 2)
     {
-//        Box3D outlet(1, nx_-2, 1, ny_-2, nz_-1, nz_-1);
         Box3D outlet(0, nx_-1, 0, ny_-1, nz_-1, nz_-1);
         return outlet;
     }
     else
     {
-//        Box3D outlet (nx_-1, nx_-1, 1, ny_-2, 1, nz_-2);
         Box3D outlet (nx_-1, nx_-1, 0, ny_-1, 0, nz_-1);
         return outlet;
     }
@@ -136,7 +133,6 @@ void porousMediaSetup( MultiBlockLattice3D<T,DESCRIPTOR>& lattice,
         {
             boundaryCondition->addPressureBoundary2N(inlet, lattice);
         }
-//        boundaryCondition->addPressureBoundary0N(inlet, lattice);
         setBoundaryDensity(lattice, inlet, (T) 1.);
 
         Box3D outlet = setOutlet(nx, ny, nz, ax); //(nx-1,nx-1, 1,ny-2, 1,nz-2);
@@ -152,7 +148,6 @@ void porousMediaSetup( MultiBlockLattice3D<T,DESCRIPTOR>& lattice,
         {
             boundaryCondition->addPressureBoundary2P(outlet, lattice);
         }
-//        boundaryCondition->addPressureBoundary0P(outlet, lattice);
         setBoundaryDensity(lattice, outlet, (T) 1. - deltaP*DESCRIPTOR<T>::invCs2);
 
         pcerr << "Definition of the geometry." << endl;
@@ -167,28 +162,6 @@ void porousMediaSetup( MultiBlockLattice3D<T,DESCRIPTOR>& lattice,
         lattice.initialize();
         delete boundaryCondition;
 }
-
-//void writeGifs(MultiBlockLattice3D<T,DESCRIPTOR>& lattice, plint iter)
-//{
-//        const plint nx = lattice.getNx();
-//        const plint ny = lattice.getNy();
-//        const plint nz = lattice.getNz();
-//
-//        const plint imSize = 600;
-//        ImageWriter<T> imageWriter("leeloo");
-//
-//        // Write velocity-norm at x=0.
-//        imageWriter.writeScaledGif( createFileName("ux_inlet", iter, 6),
-//                        *computeVelocityNorm(lattice, Box3D(0,0, 0,ny-1, 0,nz-1)),
-//                        imSize, imSize );
-//
-//        // Write velocity-norm at x=nx/2.
-//        imageWriter.writeScaledGif( createFileName("ux_half", iter, 6),
-//                        *computeVelocityNorm(lattice, Box3D(nx/2,nx/2, 0,ny-1, 0,nz-1)),
-//                        imSize, imSize );
-//
-//}
-
 
 void writeVTK(MultiBlockLattice3D<T,DESCRIPTOR>& lattice, plint iter, std::string fout)
 {
@@ -304,68 +277,71 @@ int main(int argc, char **argv)
                 pcerr << "6. number of cells in Z direction.\n";
                 pcerr << "7. Delta P.\n";
                 pcerr << "8. Direction.\n";
-                pcerr << "Example: " << argv[0] << " twoSpheres.dat tmp/ 48 64 64 0.00005\n";
+                pcerr << "9. Periodicity flag.\n";
+                pcerr << "8. Refinemenet level - needed for the max iterations.\n";
                 exit (EXIT_FAILURE);
         }
         std::string fNameIn  = argv[1];
         std::string dNameOut = argv[2];
         std::string fNameOut = argv[3];
 
-        const plint nx = atoi(argv[4]);
-        const plint ny = atoi(argv[5]);
-        const plint nz = atoi(argv[6]);
-        const T deltaP = atof(argv[7]);
-        const plint ax = atoi(argv[8]);
-
+        const plint nx    = atoi(argv[4]);
+        const plint ny    = atoi(argv[5]);
+        const plint nz    = atoi(argv[6]);
+        const T deltaP    = atof(argv[7]);
+        const plint ax    = atoi(argv[8]);
+        const plint pbc_  = atoi(argv[9]); 
+        const plint ref_k = atoi(argv[10]); 
+         
         global::directories().setOutputDir(dNameOut + "/");
+
 
         const T omega = 1.0;
         const T nu    = ((T)1/omega-0.5)/DESCRIPTOR<T>::invCs2;
-
         pcerr << "Cs: " << sqrt( 1.0 / DESCRIPTOR<T>::invCs2 ) << endl;
         pcerr << "Creation of the lattice." << endl;
+
+
+#ifdef USE_MRT
+        MRTparam<T,DESCRIPTOR> * mrt_param = new MRTparam<T,DESCRIPTOR>(parameters.getOmega());
+        MultiBlockLattice3D<T,DESCRIPTOR> lattice(nx, ny, nz, new MRTDynamics<T,DESCRIPTOR> );
+#else
         MultiBlockLattice3D<T,DESCRIPTOR> lattice(nx, ny, nz, new BGKdynamics<T,DESCRIPTOR>(omega));
+#endif
+
+
  
         // SET PERIODICITY
-        //
-        // Switch off periodicity.
-//        lattice.periodicity().toggleAll(false);
+        
+        if (pbc_)
+        {
+            // Switch off periodicity.
+            lattice.periodicity().toggleAll(false);
+        }
+        else
+        {
+            if (ax == 0)
+            {
+                lattice.periodicity().toggle(0, false);
+                lattice.periodicity().toggle(1, true);
+                lattice.periodicity().toggle(2, true);
+            }
+            else if (ax == 1)
+            {
+                lattice.periodicity().toggle(0, true);
+                lattice.periodicity().toggle(1, false);
+                lattice.periodicity().toggle(2, true);
+            }
+            else if (ax == 2)
+            {
+                lattice.periodicity().toggle(0, true);
+                lattice.periodicity().toggle(1, true);
+                lattice.periodicity().toggle(2, false);
+            }
+        }
 
- // /*        
-        if (ax == 0)
-        {
-            lattice.periodicity().toggle(0, false);
-            lattice.periodicity().toggle(1, true);
-            lattice.periodicity().toggle(2, true);
-        }
-        else if (ax == 1)
-        {
-            lattice.periodicity().toggle(0, true);
-            lattice.periodicity().toggle(1, false);
-            lattice.periodicity().toggle(2, true);
-        }
-        else if (ax == 2)
-        {
-            lattice.periodicity().toggle(0, true);
-            lattice.periodicity().toggle(1, true);
-            lattice.periodicity().toggle(2, false);
-        }
- // */        
+
         MultiScalarField3D<int> geometry(nx, ny, nz);
-        //MultiScalarField3D<int> slice(1,ny,nz);
-        //for (plint iX=0; iX<nx-1; ++iX) {
-        //    string fname = createFileName("slice_", iX, 4)+"_truc.dat";
-        //    pcout << "Reading slice " << fname;
-        //    plb_ifstream geometryFile(fNameIn.c_str());
-        //    if (!geometryFile.is_open()) {
-        //            pcout << "Error: could not open geometry file " << fNameIn << endl;
-        //            return -1;
-        //    }
-        //    geometryFile >> slice;
-        //    copy(slice, slice.getBoundingBox(), geometry, Box3D(iX,iX,0,ny-1,0,nz-1));
-        //:}
-       
-        ////////
 
         pcerr << "Reading the geometry file." << endl;
         plb_ifstream geometryFile(fNameIn.c_str());
@@ -395,8 +371,20 @@ int main(int argc, char **argv)
         pcerr << "Simulation begins" << endl;
         plint iT = 0;
 
-        const plint maxT = 250000;
-//        for (;iT<maxT; ++iT)
+        if (ref_k == 1)
+        {
+            const plint maxT = 250000;
+        }
+        else if (ref_k == 2)
+        {
+            const plint maxT = 50000;
+        }
+        
+        else if (ref_k == 3)
+        {
+            const plint maxT = 10000;
+        }
+
         while(true)
         {
             if (iT % 200 == 0) 
