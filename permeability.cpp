@@ -8,7 +8,7 @@ using namespace std;
 
 typedef double T;
 
-#ifdef USE_MRT
+#ifdef MRT
     #define DESCRIPTOR descriptors::MRTD3Q19Descriptor
 #else
     #define DESCRIPTOR descriptors::D3Q19Descriptor
@@ -266,7 +266,7 @@ int main(int argc, char **argv)
 {
         plbInit(&argc, &argv);
 
-        if (argc != 9)
+        if (argc != 11)
         {
                 pcerr << "Error missing some input parameter\n";
                 pcerr << "The structure is :\n";
@@ -278,7 +278,7 @@ int main(int argc, char **argv)
                 pcerr << "7. Delta P.\n";
                 pcerr << "8. Direction.\n";
                 pcerr << "9. Periodicity flag.\n";
-                pcerr << "8. Refinemenet level - needed for the max iterations.\n";
+                pcerr << "10. Refinemenet level - needed for the max iterations.\n";
                 exit (EXIT_FAILURE);
         }
         std::string fNameIn  = argv[1];
@@ -300,20 +300,18 @@ int main(int argc, char **argv)
         const T nu    = ((T)1/omega-0.5)/DESCRIPTOR<T>::invCs2;
         pcerr << "Cs: " << sqrt( 1.0 / DESCRIPTOR<T>::invCs2 ) << endl;
         pcerr << "Creation of the lattice." << endl;
+        
 
-
-#ifdef USE_MRT
-        MRTparam<T,DESCRIPTOR> * mrt_param = new MRTparam<T,DESCRIPTOR>(parameters.getOmega());
-        MultiBlockLattice3D<T,DESCRIPTOR> lattice(nx, ny, nz, new MRTDynamics<T,DESCRIPTOR> );
+#ifdef MRT
+        MultiBlockLattice3D<T,DESCRIPTOR> lattice(nx, ny, nz, new MRTdynamics<T,DESCRIPTOR> ( omega ) );
 #else
-        MultiBlockLattice3D<T,DESCRIPTOR> lattice(nx, ny, nz, new BGKdynamics<T,DESCRIPTOR>(omega));
+        MultiBlockLattice3D<T,DESCRIPTOR> lattice(nx, ny, nz, new BGKdynamics<T,DESCRIPTOR> ( omega ) );
 #endif
 
 
- 
         // SET PERIODICITY
         
-        if (pbc_)
+        if ( pbc_ != 1 )
         {
             // Switch off periodicity.
             lattice.periodicity().toggleAll(false);
@@ -371,19 +369,24 @@ int main(int argc, char **argv)
         pcerr << "Simulation begins" << endl;
         plint iT = 0;
 
+        plint maxT_;
+
         if (ref_k == 1)
         {
-            const plint maxT = 250000;
+            maxT_ = 25000; //0;
         }
         else if (ref_k == 2)
         {
-            const plint maxT = 50000;
+            maxT_ = 50000;
+            maxT_ = 10000;
         }
         
         else if (ref_k == 3)
         {
-            const plint maxT = 10000;
+            maxT_ = 10000;
         }
+
+        const plint maxT = maxT_;
 
         while(true)
         {
