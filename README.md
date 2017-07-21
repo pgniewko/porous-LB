@@ -27,8 +27,9 @@ make
 ```
 
 Compilation options can be set by changing proper variables in Makefile:
-* `palabosRoot` points to the directory with Palabos source code
-* `compileFlags` sets the compilation flags. Uncomment `-DMRT` option for MRT model
+
+* `palabosRoot` points to the directory with Palabos source code   
+* `compileFlags` sets the compilation flags. Uncomment `-DMRT` option for MRT model   
 
 
 EXTERNAL LIBRARIES

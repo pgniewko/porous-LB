@@ -373,12 +373,11 @@ int main(int argc, char **argv)
 
         if (ref_k == 1)
         {
-            maxT_ = 25000; //0;
+            maxT_ = 250000;
         }
         else if (ref_k == 2)
         {
             maxT_ = 50000;
-            maxT_ = 10000;
         }
         
         else if (ref_k == 3)
@@ -395,10 +394,10 @@ int main(int argc, char **argv)
                 pcerr << "Iteration " << iT << endl;
             }
                 
-            if ( (iT+1) % 5000 == 0) 
-            {
-                writeVTK(lattice, iT, fNameOut);
-            }
+//            if ( (iT+1) % 5000 == 0) 
+//            {
+//                writeVTK(lattice, iT, fNameOut);
+//            }
 
             lattice.collideAndStream();
             converge.takeValue(getStoredAverageEnergy(lattice), true);
