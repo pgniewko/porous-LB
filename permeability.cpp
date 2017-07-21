@@ -389,11 +389,11 @@ int main(int argc, char **argv)
 
         while(true)
         {
-            if (iT % 200 == 0) 
-            {
-                pcerr << "Iteration " << iT << endl;
-            }
-                
+//            if (iT % 200 == 0) 
+//            {
+//                pcerr << "Iteration " << iT << endl;
+//            }
+//                
 //            if ( (iT+1) % 5000 == 0) 
 //            {
 //                writeVTK(lattice, iT, fNameOut);
