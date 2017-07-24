@@ -304,19 +304,14 @@ int main(int argc, char **argv)
 
 #ifdef MRT
         MultiBlockLattice3D<T,DESCRIPTOR> lattice(nx, ny, nz, new MRTdynamics<T,DESCRIPTOR> ( omega ) );
+        pcerr << "MRT dynamics" << endl;
 #else
         MultiBlockLattice3D<T,DESCRIPTOR> lattice(nx, ny, nz, new BGKdynamics<T,DESCRIPTOR> ( omega ) );
+        pcerr << "BGK dynamics" << endl;
 #endif
 
-
         // SET PERIODICITY
-        
-        if ( pbc_ != 1 )
-        {
-            // Switch off periodicity.
-            lattice.periodicity().toggleAll(false);
-        }
-        else
+        if (pbc_ == 1)
         {
             if (ax == 0)
             {
@@ -336,6 +331,11 @@ int main(int argc, char **argv)
                 lattice.periodicity().toggle(1, true);
                 lattice.periodicity().toggle(2, false);
             }
+        }
+        else
+        {
+            // Switch off periodicity.
+            lattice.periodicity().toggleAll(false);
         }
 
 
@@ -373,11 +373,11 @@ int main(int argc, char **argv)
 
         if (ref_k == 1)
         {
-            maxT_ = 250000;
+            maxT_ = 100000;
         }
         else if (ref_k == 2)
         {
-            maxT_ = 50000;
+            maxT_ = 25000;
         }
         
         else if (ref_k == 3)
