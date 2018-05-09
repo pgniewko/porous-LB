@@ -269,16 +269,17 @@ int main(int argc, char **argv)
         if (argc != 11)
         {
                 pcerr << "Error missing some input parameter\n";
-                pcerr << "The structure is :\n";
-                pcerr << "1. Input file name.\n";
-                pcerr << "2. Output directory name.\n";
-                pcerr << "4. number of cells in X direction.\n";
-                pcerr << "5. number of cells in Y direction.\n";
-                pcerr << "6. number of cells in Z direction.\n";
-                pcerr << "7. Delta P.\n";
-                pcerr << "8. Direction.\n";
-                pcerr << "9. Periodicity flag.\n";
-                pcerr << "10. Refinemenet level - needed for the max iterations.\n";
+                pcerr << "The arguments are:\n\n";
+                pcerr << "1.  Input file name.\n";
+                pcerr << "2.  Output directory name.\n";
+                pcerr << "3.  Output file name.\n";
+                pcerr << "4.  number of lattice sites in X direction.\n";
+                pcerr << "5.  number of lattice sites in Y direction.\n";
+                pcerr << "6.  number of lattice sites in Z direction.\n";
+                pcerr << "7.  Pressure difference Delta P.\n";
+                pcerr << "8.  Direction of the pressure gradient.\n";
+                pcerr << "9.  Periodicity flag.\n";
+                pcerr << "10. Refinemenet level.\n";
                 exit (EXIT_FAILURE);
         }
         std::string fNameIn  = argv[1];

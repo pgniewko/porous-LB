@@ -29,7 +29,7 @@ make
 Compilation options can be set by changing proper variables in Makefile:
 
 * `palabosRoot` points to the directory with Palabos source code   
-* `compileFlags` sets the compilation flags. Uncomment `-DMRT` option for MRT model   
+* `compileFlags` sets the compilation flags. Uncomment `-DMRT` option for MRT dynamics
 
 
 EXTERNAL LIBRARIES
@@ -40,8 +40,23 @@ USAGE
 =====
 Run the code with no parameters for the options list and usage:
 ```
-./permeability
+./permeability 
+
 ```
+The arguments are:
+    
+1.  Input file name
+2.  Output directory name
+3.  Output file name
+4.  Number of lattice sites in X direction
+5.  Number of lattice sites in Y direction
+6.  Number of lattice sites in Z direction
+7.  Pressure difference delta P
+8.  Direction of the pressure gradient
+9.  Periodicity flag. 
+    * 1 for PBC in direction perpendicular to arg.no.8
+10. Refinemenet level - needed for the max iterations estimation
+
 
 
 COPYRIGHT NOTICE
