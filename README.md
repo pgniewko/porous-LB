@@ -54,14 +54,14 @@ The arguments are:
 7.  Pressure difference delta P
 8.  Direction of the pressure gradient
 9.  Periodicity flag. 
-    * 1 for PBC in direction perpendicular to arg.no.8
+    * 1 for PBC in a direction perpendicular to arg.no.8
 10. Refinemenet level - needed for the max iterations estimation
 
 
 
 COPYRIGHT NOTICE
 ================
-Copyright (C) 2017, Pawel Gniewek   
+Copyright (C) 2018, Pawel Gniewek   
 Email : pawel.gniewek@berkeley.edu   
 All rights reserved.   
 License: BSD   
