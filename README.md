@@ -4,7 +4,7 @@ DESCRIPTION
 
 The code calculates material permeability (using [Darcy's law](https://en.wikipedia.org/wiki/Darcy%27s_law)) and [tortuosity](http://aip.scitation.org/doi/abs/10.1063/1.4711147) 
 using BGK or MRT relaxation models.   
-The calculations can be performed with periodic and non-periodic boundary condition.   
+The calculations can be performed with periodic and non-periodic boundary conditions.   
 
 GETTING THE CODE
 ==================================================
@@ -18,7 +18,7 @@ git clone git@bitbucket.org:pawelgniewek/porous-lb.git
 git pull origin master
 ```
 
-COMPILING AND INSTALLATION - LINUX
+COMPILING AND INSTALLATION - UNIX
 ==================================================
 * Executables
 To build executables run:
