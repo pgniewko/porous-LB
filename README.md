@@ -10,7 +10,7 @@ GETTING THE CODE
 ==================================================
 * To get the code:
 ```
-git clone git@bitbucket.org:pawelgniewek/porous-lb.git
+git clone git@github.com:pgniewko/porous-LB.git
 ```
 
 * To obtain the most recent version of the code:
@@ -54,7 +54,7 @@ The arguments are:
 7.  Pressure difference delta P
 8.  Direction of the pressure gradient
 9.  Periodicity flag. 
-    * 1 for PBC in a direction perpendicular to arg.no.8
+    * 1 for PBC in a direction perpendicular to argument no.8
 10. Refinemenet level - needed for the max iterations estimation
 
 
@@ -69,6 +69,6 @@ License: BSD
 ACKNOWLEDGMENTS
 ===============
 
-The simulation has been developed based on the Palabos' on-line [example](http://www.palabos.org/documentation/tutorial/permeability.html).
+The code is developed based on the Palabos' on-line [example](http://www.palabos.org/documentation/tutorial/permeability.html).
 
 
