@@ -59,9 +59,9 @@ The arguments are:
 
 INPUT FILE
 ==========
-The input file (1st argument) contains a single line.   
+The input file (the 1st argument) contains a single line.   
 The file encodes solid and liquid phase grids in a binary manner: 1 for solid, and 0 for liquid phases.    
-The grid points are given layer-by-layer in XY direction.   
+The grid points are looped over X,Y, and Z directions.   
 
 For example, for 3x3x3 cube filled with liquid(0), and a solid(1) site in the middle of this cube, we can create an inpute file with the following, simple script in Python:    
 ```Python
@@ -74,7 +74,7 @@ s = ""
 for i in range(3):
   for j in range(3):
     for k in range(3):
-      s += str( lattice[i][j][k])
+      s += str( lattice[i][j][k]) + " "
 
 print(s)
 ```
