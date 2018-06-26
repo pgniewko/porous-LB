@@ -57,7 +57,27 @@ The arguments are:
     * 1 for PBC in a direction perpendicular to argument no.8
 10. Refinemenet level - needed for the max iterations estimation
 
+INPUT FILE
+==========
+The input file (1st argument) contains a single line.   
+The file encodes solid and liquid phase grids in a binary manner: 1 for solid, and 0 for liquid phases.    
+The grid points are given layer-by-layer in XY direction.   
 
+For example, for 3x3x3 cube filled with liquid(0), and a solid(1) site in the middle of this cube, we can create an inpute file with the following, simple script in Python:    
+```Python
+import numpy as np
+
+lattice = np.zeros([3,3,3])
+lattice[1][1][1] = 1
+s = ""
+
+for i in range(3):
+  for j in range(3):
+    for k in range(3):
+      s += str( lattice[i][j][k])
+
+print(s)
+```
 
 COPYRIGHT NOTICE
 ================
