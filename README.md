@@ -1,3 +1,5 @@
+>Disclaimer: This is special purpose software and it may not be robust in all applications or outside the parameter regime in which it was originally developed.
+
 DESCRIPTION
 ==================================================
 `porous-LB` is a code that performs Lattice-Boltzmann simulations for porous materials.
@@ -86,9 +88,12 @@ Email : gniewko.pablo@gmail.com
 All rights reserved.   
 License: BSD 3   
 
+REFERENCES
+==========
+[Fluid flow through packings of elastic shells](https://arxiv.org/abs/1807.00249), P. Gniewek, O. Hallatschek (2018)
+
+
 ACKNOWLEDGMENTS
 ===============
-
 The code is developed based on the Palabos' on-line [example](http://www.palabos.org/documentation/tutorial/permeability.html).
-
 
