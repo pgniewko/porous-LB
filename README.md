@@ -73,9 +73,9 @@ lattice = np.zeros([3,3,3])
 lattice[1][1][1] = 1
 s = ""
 
-for i in range(3):
-  for j in range(3):
-    for k in range(3):
+for i in range(3,-1,-1):
+  for j in range(3,-1,-1):
+    for k in range(3,-1,-1):
       s += str( lattice[i][j][k]) + " "
 
 print(s)

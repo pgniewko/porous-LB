@@ -153,8 +153,6 @@ void porousMediaSetup( MultiBlockLattice3D<T,DESCRIPTOR>& lattice,
         pcerr << "Definition of the geometry." << endl;
         // Where "geometry" evaluates to 1, use bounce-back.
         defineDynamics(lattice, geometry, new BounceBack<T,DESCRIPTOR>(), 1);
-        // Where "geometry" evaluates to 2, use no-dynamics (which does nothing).
-        defineDynamics(lattice, geometry, new NoDynamics<T,DESCRIPTOR>(), 2);
 
         pcerr << "Initilization of rho and u." << endl;
         initializeAtEquilibrium( lattice, lattice.getBoundingBox(), PressureGradient(deltaP, n_ax, ax) );
